@@ -1,0 +1,11 @@
+{
+  "timestamp": "2024-11-18T10:13:28.045881025+03:00",
+  "function": "ALL",
+  "message": "Starting the application"
+}
+{
+  "timestamp": "2024-11-18T10:13:28.046141403+03:00",
+  "function": "Main",
+  "message": "Something went wrong",
+  "error": "an example error"
+}
