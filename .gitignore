@@ -1,3 +1,4 @@
 resources/logs/logs.art
 _GITIGNORE/
 _GITIGNORE/**.*
+resources/database/art.db

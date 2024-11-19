@@ -25,44 +25,45 @@ func CreatePiecesTable(db *sql.DB, args ...any) any {
 * create a piece
 * args: title, slug, value, description, details
  */
-func PieceCreate(db *sql.DB, args ...any) any {
-	error := ""
+ func PieceCreate(db *sql.DB, args ...any) any {
+	errorStr := ""
+
 	query, ok := args[0].(string)
-	if ok {
-		title, ok := args[1].(string)
-		if ok {
-			slug, ok := args[2].(string)
-			if ok {
-				value, ok := args[3].(float64)
-				if ok {
-					description, ok := args[4].(string)
-					if ok {
-						details, ok := args[5].(string)
-						if ok {
-							_, err := db.Exec(query, title, slug, value, description, details)
-							return err == nil
-						} else {
-							error = "details"
-						}
-					} else {
-						error = "description"
-					}
-				} else {
-					error = "value"
-				}
-			} else {
-				error = "slug"
-			}
-		} else {
-			error = "title"
-		}
-	} else {
-		error = "query"
+	if !ok {
+		errorStr += "query"
+	}
+	title, ok := args[1].(string)
+	if !ok {
+		errorStr += "title"
+	}
+	slug, ok := args[2].(string)
+	if !ok {
+		errorStr += "slug"
+	}
+	value, ok := args[3].(float64)
+	if !ok {
+		errorStr += "value"
+	}
+	description, ok := args[4].(string)
+	if !ok {
+		errorStr += "description"
+	}
+	details, ok := args[5].(string)
+	if !ok {
+		errorStr += "details"
 	}
 
-	log_t.LogW("pieces-create", error, nil)
-	return false
+	if len(errorStr) != 0 {
+		log_t.LogW("pieces-create", errorStr, nil)
+		return false
+	}
+	_, err := db.Exec(query, title, slug, value, description, details)
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	return err == nil
 }
+
 
 /*
 * select all pieces from the database
@@ -177,7 +178,7 @@ func PiecesUpdate(db *sql.DB, args ...any) any {
 		errorStr += "details"
 	}
 
-	if len(errorStr) == 0 {
+	if len(errorStr) != 0 {
 		log_t.LogW("pieces-create", errorStr, nil)
 		return false
 	}
