@@ -2,7 +2,6 @@ package sqlite
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 
 	_ "github.com/mattn/go-sqlite3"
@@ -147,56 +146,46 @@ func PiecesSelectById(db *sql.DB, args ...any) any {
 
 /* updates a single piece on the database */
 func PiecesUpdate(db *sql.DB, args ...any) any {
-	error := ""
+	errorStr := ""
 
 	query, ok := args[0].(string)
-	if ok {
-		id, ok := args[1].(int)
-		if ok {
-			fmt.Println("ID: ", id)
-			title, ok := args[2].(string)
-			if ok {
-				fmt.Println("title: ", title)
-				slug, ok := args[3].(string)
-				if ok {
-					fmt.Println("slug: ", slug)
-					value, ok := args[4].(float64)
-					if ok {
-						fmt.Println("value: ", value)
-						description, ok := args[5].(string)
-						if ok {
-							fmt.Println("description: ", description)
-							details, ok := args[6].(string)
-							if ok {
-								fmt.Println("details: ", details)
-								_, err := db.Exec(query, title, slug, value, description, details, id)
-								if err != nil {
-									log.Fatalln(err.Error())
-								}
-								return err == nil
-							} else {
-								error = "details"
-							}
-						} else {
-							error = "description"
-						}
-					} else {
-						error = "value"
-					}
-				} else {
-					error = "slug"
-				}
-			} else {
-				error = "title"
-			}
-		} else {
-			error = "id"
-		}
-	} else {
-		error = "query"
+	if !ok {
+		errorStr += "query"
 	}
-	log_t.LogW("pieces-create", error, nil)
-	return false
+	id, ok := args[1].(int)
+	if !ok {
+		errorStr += "id"
+	}
+	title, ok := args[2].(string)
+	if !ok {
+		errorStr += "title"
+	}
+	slug, ok := args[3].(string)
+	if !ok {
+		errorStr += "slug"
+	}
+	value, ok := args[4].(float64)
+	if !ok {
+		errorStr += "value"
+	}
+	description, ok := args[5].(string)
+	if !ok {
+		errorStr += "description"
+	}
+	details, ok := args[6].(string)
+	if !ok {
+		errorStr += "details"
+	}
+
+	if len(errorStr) == 0 {
+		log_t.LogW("pieces-create", errorStr, nil)
+		return false
+	}
+	_, err := db.Exec(query, title, slug, value, description, details, id)
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	return err == nil
 }
 
 /*
