@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Piece Manager</title>
+    <link rel="stylesheet" href="/static/css/styles.css" type="text/css">
+</head>
+<body>
+    <div class="container">
+        <h1>Art Piece Manager</h1>
+
+        <button id="add-piece-btn" class="btn">Add New Piece</button>
+
+        <table id="pieces-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Slug</th>
+                    <th>Value</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- all art pieces listed -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal for Viewing/Editing Art Piece -->
+    <div id="piece-modal" class="modal">
+        <div class="modal-content">
+            <span id="close-modal" class="close">&times;</span>
+            <h2 id="modal-title">Add/Update Art Piece</h2>
+
+            <form id="piece-form">
+                <label for="title">Title:</label>
+                <input type="text" id="title" required>
+
+                <label for="slug">Slug:</label>
+                <input type="text" id="slug" required>
+
+                <label for="value">Value:</label>
+                <input type="number" id="value" required>
+
+                <label for="description">Description:</label>
+                <textarea id="description" required></textarea>
+
+                <label for="details">Details:</label>
+                <textarea id="details" required></textarea>
+
+                <button type="submit" id="submit-btn">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/static/js/script.js" type="text/js"></script>
+</body>
+</html>

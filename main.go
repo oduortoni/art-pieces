@@ -21,12 +21,17 @@ func main() {
 
 	var container types_t.Container
 	router := mux.NewRouter()
-	router.HandleFunc("/pieces", controllers.PiecesSelectHandler(&container)).Methods("GET")
-	router.HandleFunc("/pieces", controllers.PieceCreateHandler(&container)).Methods("POST")
-	router.HandleFunc("/pieces/{id:[0-9]+}", controllers.PiecesSelectByIdHandler(&container)).Methods("GET")
-	router.HandleFunc("/pieces/{id:[0-9]+}", controllers.PiecesUpdateHandler(&container)).Methods("PUT")
-	router.HandleFunc("/pieces/{id:[0-9]+}", controllers.PiecesDeleteHandler(&container)).Methods("DELETE")
 
-	http.HandleFunc("/", controllers.Index)
+	router.HandleFunc("/", controllers.Index(&container)).Methods("GET")
+	router.PathPrefix("/static/").HandlerFunc(controllers.Static)
+	
+	router.HandleFunc("/api/pieces", controllers.PiecesSelectHandler(&container)).Methods("GET")
+	router.HandleFunc("/api/pieces", controllers.PieceCreateHandler(&container)).Methods("POST")
+	router.HandleFunc("/api/pieces/{id:[0-9]+}", controllers.PiecesSelectByIdHandler(&container)).Methods("GET")
+	router.HandleFunc("/api/pieces/{id:[0-9]+}", controllers.PiecesUpdateHandler(&container)).Methods("PUT")
+	router.HandleFunc("/api/pieces/{id:[0-9]+}", controllers.PiecesDeleteHandler(&container)).Methods("DELETE")
+
+	router.HandleFunc("/", controllers.PiecesSelectHandler(&container)).Methods("GET")
+
 	http.ListenAndServe(portStr, router)
 }

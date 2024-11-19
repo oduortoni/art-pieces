@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -13,13 +14,15 @@ import (
 // Handler to get all pieces
 func PiecesSelectHandler(container *types_t.Container) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("Pieces")
 		pieces := sqlite.Run(sqlite.PiecesSelect, sqlite.PiecesSelectAllQuery)
 		if pieces == nil {
 			http.Error(w, "No pieces found", http.StatusNotFound)
 			return
 		}
 
-		// Return the list of pieces as JSON
+		fmt.Println("Pieces: ", pieces)
+
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(pieces)
 	}

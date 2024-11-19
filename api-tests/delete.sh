@@ -1,1 +1,1 @@
-curl -X DELETE localhost:9000/pieces/3
+curl -X DELETE localhost:9000/api/pieces/3
